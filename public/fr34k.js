@@ -23,14 +23,14 @@ class Fr34kUtils {
             return false;
         }
 
-        Fr34kUtils.countScriptRuns();
+        this.countScriptRuns();
 
         return true;
     }
 
     async countScriptRuns() {
         $.ajax({
-            url: this.serverUrl + this.config.script_id + '/count',
+            url: this.serverUrl + this.config.script_id + '/run',
             type: 'POST',
             data: {
                 player: game_data.player.name
