@@ -19,20 +19,3 @@ Route::get('/scripts/{script}/download', function (Script $script) {
 
     return response()->download(storage_path('app/public/' . $script->file));
 })->name('script.download');
-
-Route::prefix('api')->group(function () {
-    Route::post('/scripts/{script}/run', function (Script $script) {
-        $player = request('player');
-
-        Log::info('Script executed', [
-            'script' => $script->title,
-            'player' => $player,
-        ]);
-        $script->increment('run_counter');
-
-        return response()->json([
-            'message' => 'Script executed successfully',
-            'count' => $script->run_counter,
-        ]);
-    });
-});
