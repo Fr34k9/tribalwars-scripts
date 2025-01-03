@@ -40,7 +40,7 @@ class ScriptResource extends Resource
                     ->required(),
                 Forms\Components\FileUpload::make('file')
                     ->label('File')
-                    ->acceptedFileTypes(['.js']),
+                    ->preserveFilenames(),
                 Forms\Components\TextInput::make('download_counter')
                     ->label('Download Counter')
                     ->numeric()

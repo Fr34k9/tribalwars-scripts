@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Script;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +21,13 @@ Route::get('/scripts/{script}/download', function (Script $script) {
 })->name('script.download');
 
 Route::prefix('api')->group(function () {
-    Route::get('/scripts/{script}/run', function (Script $script) {
+    Route::post('/scripts/{script}/run', function (Script $script) {
+        $player = request('player');
+
+        Log::info('Script executed', [
+            'script' => $script->title,
+            'player' => $player,
+        ]);
         $script->increment('run_counter');
 
         return response()->json([
