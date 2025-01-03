@@ -9,12 +9,18 @@ class Script extends Model
     protected $fillable = [
         'title',
         'short_description',
-        'description',
+        'long_description',
         'image',
         'download_counter',
         'run_counter',
+        'tags',
         'file',
         'version',
         'is_active',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
+        'is_active' => 'boolean',
     ];
 }
