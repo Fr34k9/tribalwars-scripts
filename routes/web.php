@@ -2,6 +2,7 @@
 
 use App\Models\Script;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     $scripts = Script::all();
@@ -9,5 +10,12 @@ Route::get('/', function () {
     $totalDownloads = $scripts->sum('download_counter');
     $totalRuns = $scripts->sum('run_counter');
 
-    return view('welcome', compact('scripts', 'totalScripts', 'totalDownloads', 'totalRuns'));
-});
+    return view('index', compact('scripts', 'totalScripts', 'totalDownloads', 'totalRuns'));
+})->name('home');
+
+
+Route::get('/scripts/{script}/download', function (Script $script) {
+    $script->increment('download_counter');
+
+    return response()->download(storage_path('app/public/' . $script->file));
+})->name('script.download');
