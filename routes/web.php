@@ -13,9 +13,18 @@ Route::get('/', function () {
     return view('index', compact('scripts', 'totalScripts', 'totalDownloads', 'totalRuns'));
 })->name('home');
 
-
 Route::get('/scripts/{script}/download', function (Script $script) {
     $script->increment('download_counter');
 
     return response()->download(storage_path('app/public/' . $script->file));
 })->name('script.download');
+
+Route::prefix('api')->group(function () {
+    Route::get('/scripts/{script}/run', function (Script $script) {
+        $script->increment('run_counter');
+
+        return response()->json([
+            'message' => 'Script executed successfully',
+        ]);
+    });
+});
