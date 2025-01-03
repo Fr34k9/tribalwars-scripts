@@ -61,4 +61,7 @@ class Fr34kUtils {
     }
 }
 
-export default Fr34kUtils;
+// Export the utility class
+if (typeof window !== 'undefined') {
+    window.Fr34kUtils = Fr34kUtils;
+}
