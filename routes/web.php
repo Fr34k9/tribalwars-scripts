@@ -32,6 +32,7 @@ Route::prefix('api')->group(function () {
 
         return response()->json([
             'message' => 'Script executed successfully',
+            'count' => $script->run_counter,
         ]);
     });
 });
