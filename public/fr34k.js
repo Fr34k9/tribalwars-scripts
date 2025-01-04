@@ -47,6 +47,11 @@ class Fr34kUtils {
             return false;
         }
 
+        if (!this.getValue('first_run')) {
+            this.registerScript();
+            this.saveValue('first_run', true);
+        }
+
         this.countScriptRuns();
 
         return true;
@@ -55,6 +60,25 @@ class Fr34kUtils {
     finishScript(actions = 1) {
         this.countScriptActions(actions);
         this.logMessage('Script finished', 'info');
+    }
+
+    async registerScript() {
+        $.ajax({
+            url: this.serverUrl + 'scripts/' + this.config.script_id + '/register',
+            type: 'POST',
+            data: {
+                player: game_data.player.name || 'Unknown',
+                account_manager: game_data.features.AccountManager.active ? 1 : 0,
+                premium: game_data.features.Premium.active ? 1 : 0,
+                world: game_data.world || 'Unknown',
+            },
+            success: (response) => {
+                this.logMessage('This was the first time using this script', 'debug');
+            },
+            error: (error) => {
+                this.logMessage('Failed to register script', 'error');
+            }
+        });
     }
 
     async countScriptRuns() {

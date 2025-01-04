@@ -37,4 +37,24 @@ Route::prefix('scripts')->group(function () {
             'counter' => $script->action_counter,
         ]);
     });
+
+    Route::post('/{script}/register', function (Script $script) {
+        $player = request('player');
+        $account_manager = request('account_manager');
+        $premium = request('premium');
+        $world = request('world');
+
+        Log::info('Script registered', [
+            'script' => $script->title,
+            'script_id' => $script->id,
+            'player' => $player,
+            'world' => $world,
+            'account_manager' => $account_manager,
+            'premium' => $premium,
+        ]);
+
+        return response()->json([
+            'message' => 'Script registered successfully',
+        ]);
+    });
 });
