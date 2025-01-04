@@ -1,4 +1,5 @@
 class Fr34kUtils {
+
     constructor(config) {
         this.serverUrl = 'https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/api/';
         this.config = config;
@@ -31,7 +32,7 @@ class Fr34kUtils {
     logMessage(message, type = 'info') {
         const styles = {
             info: 'color: blue; font-weight: bold;',
-            warn: 'color: orange; font-weight: bold;',
+            debug: 'color: orange; font-weight: bold;',
             error: 'color: red; font-weight: bold;',
         };
         console.log(`%c[Fr34k-${this.config.script_name}] ${message}`, styles[type] || styles.info);
@@ -39,7 +40,7 @@ class Fr34kUtils {
 
     // Initialization function
     initScript() {
-        this.logMessage(`${this.config.script_id} v${this.config.version} initialized`, 'info');
+        this.logMessage(`Script ${this.config.script_name}(${this.config.script_id}) active`, 'info');
 
         if (!window.location.href.includes('staemme')) {
             this.logMessage('This script can only run on Tribal Wars.', 'warn');
@@ -49,6 +50,11 @@ class Fr34kUtils {
         this.countScriptRuns();
 
         return true;
+    }
+
+    finishScript(actions = 1) {
+        this.countScriptActions(actions);
+        this.logMessage('Script finished', 'info');
     }
 
     async countScriptRuns() {
@@ -72,7 +78,7 @@ class Fr34kUtils {
             url: this.serverUrl + 'scripts/' + this.config.script_id + '/action',
             type: 'POST',
             data: {
-                count: counter,
+                counter: counter,
                 player: game_data.player.name
             },
             success: (response) => {
@@ -84,16 +90,30 @@ class Fr34kUtils {
         });
     }
 
-    specialAlert() {
-        alert('This is a special alert!');
-    }
+
+    // Helper functions
+    random = {
+        delay: (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
+        //number: (min, max) => parseInt(Math.random() * (Math.max(min, max) - Math.min(min, max)) + Math.min(min, max))
+        number: (min, max) => {
+            // Ensure we're working with numbers
+            min = Number(min);
+            max = Number(max);
+
+            // Get a random decimal between 0 and 1
+            const random = Math.random();
+
+            // Calculate the range and add to minimum
+            return random * (max - min) + min;
+        }
+    };
 
     // Sleep function (returns a promise for delays)
     async sleep(milliseconds) {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
-    detectBot() {
+    botDetected() {
         let detected = false;
         if ($('#botprotection_quest').length > 0) {
             detected = true;
@@ -117,15 +137,9 @@ class Fr34kUtils {
 
     saveValue(key, value) {
         localStorage.setItem(this.config.script_id + '_' + key, value);
-        if (this.config.debug) {
-            this.logMessage(`Saved value: ${key} = ${value}`);
-        }
     }
 
     getValue(key) {
-        if (this.config.debug) {
-            this.logMessage(`Getting value: ${key} = ${localStorage.getItem(this.config.script_id + '_' + key)}`);
-        }
         return localStorage.getItem(this.config.script_id + '_' + key);
     }
 

@@ -34,7 +34,7 @@ Route::prefix('scripts')->group(function () {
 
         return response()->json([
             'message' => 'Script action recorded',
-            'count' => $script->action_counter,
+            'counter' => $script->action_counter,
         ]);
     });
 });
