@@ -13,11 +13,13 @@ class ScriptsStats extends Component
         $totalScripts = $scripts->count();
         $totalDownloads = $scripts->sum('download_counter');
         $totalRuns = $scripts->sum('run_counter');
+        $totalActions = $scripts->sum('action_counter');
 
         return view('livewire.scripts.scripts-stats', [
             'totalScripts' => $totalScripts,
             'totalDownloads' => $totalDownloads,
             'totalRuns' => $totalRuns,
+            'totalActions' => $totalActions,
         ]);
     }
 }

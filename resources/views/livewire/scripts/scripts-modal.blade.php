@@ -38,7 +38,8 @@
                 <div class="flex items-center justify-between">
                     <div class="text-sm text-gray-500">
                         <span class="mr-4">Downloads: {{ $script->download_counter ?? 0 }}</span>
-                        <span>Runs: {{ $script->run_counter ?? 0 }}</span>
+                        <span class="mr-4">Runs: {{ $script->run_counter ?? 0 }}</span>
+                        <span>Actions: {{ $script->action_counter ?? 0 }}</span>
                     </div>
                     <a 
                         href="{{ route('script.download', $script) }}"

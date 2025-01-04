@@ -13,6 +13,7 @@ class Script extends Model
         'image',
         'download_counter',
         'run_counter',
+        'action_counter',
         'tags',
         'file',
         'version',

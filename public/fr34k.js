@@ -1,7 +1,30 @@
 class Fr34kUtils {
     constructor(config) {
-        this.serverUrl = 'https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/api/scripts/';
+        this.serverUrl = 'https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/api/';
         this.config = config;
+
+        if (!this.initScript()) {
+            return;
+        }
+
+        // check config
+        if (!this.checkConfig()) {
+            return;
+        }
+    }
+
+    // Check config
+    checkConfig() {
+        let requiredFields = ['script_id', 'script_name'];
+
+        for (let field of requiredFields) {
+            if (!this.config[field]) {
+                this.logMessage(`Missing config field: ${field}`, 'error');
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Log function
@@ -11,7 +34,7 @@ class Fr34kUtils {
             warn: 'color: orange; font-weight: bold;',
             error: 'color: red; font-weight: bold;',
         };
-        console.log(`%c[${this.config.script_id}] ${message}`, styles[type] || styles.info);
+        console.log(`%c[Fr34k-${this.config.script_name}] ${message}`, styles[type] || styles.info);
     }
 
     // Initialization function
@@ -30,7 +53,7 @@ class Fr34kUtils {
 
     async countScriptRuns() {
         $.ajax({
-            url: this.serverUrl + this.config.script_id + '/run',
+            url: this.serverUrl + 'scripts/' + this.config.script_id + '/run',
             type: 'POST',
             data: {
                 player: game_data.player.name
@@ -44,6 +67,23 @@ class Fr34kUtils {
         });
     }
 
+    async countScriptActions(counter) {
+        $.ajax({
+            url: this.serverUrl + 'scripts/' + this.config.script_id + '/action',
+            type: 'POST',
+            data: {
+                count: counter,
+                player: game_data.player.name
+            },
+            success: (response) => {
+                this.logMessage(`Total script actions: ${response.count}`, 'info');
+            },
+            error: (error) => {
+                this.logMessage('Failed to get total script actions', 'error');
+            }
+        });
+    }
+
     specialAlert() {
         alert('This is a special alert!');
     }
@@ -53,12 +93,42 @@ class Fr34kUtils {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
-    // Example bot detection placeholder
     detectBot() {
-        this.logMessage('Checking for bot-like behavior...', 'info');
-        // Add bot detection logic here
+        let detected = false;
+        if ($('#botprotection_quest').length > 0) {
+            detected = true;
+        }
+
+        if ($('#bot_check').length > 0) {
+            detected = true;
+        }
+
+        if ($('#popup_box_bot_protection').length > 0) {
+            detected = true;
+        }
+
+        if (detected) {
+            this.logMessage('Bot detected', 'warn');
+            return true;
+        }
+
         return false;
     }
+
+    saveValue(key, value) {
+        localStorage.setItem(this.config.script_id + '_' + key, value);
+        if (this.config.debug) {
+            this.logMessage(`Saved value: ${key} = ${value}`);
+        }
+    }
+
+    getValue(key) {
+        if (this.config.debug) {
+            this.logMessage(`Getting value: ${key} = ${localStorage.getItem(this.config.script_id + '_' + key)}`);
+        }
+        return localStorage.getItem(this.config.script_id + '_' + key);
+    }
+
 }
 
 // Export the utility class

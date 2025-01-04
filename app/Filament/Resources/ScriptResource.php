@@ -51,6 +51,11 @@ class ScriptResource extends Resource
                     ->numeric()
                     ->default(0)
                     ->disabled(),
+                Forms\Components\TextInput::make('action_counter')
+                    ->label('Action Counter')
+                    ->numeric()
+                    ->default(0)
+                    ->disabled(),
                 Forms\Components\TextInput::make('version')
                     ->label('Version')
                     ->required(),
@@ -78,6 +83,9 @@ class ScriptResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('run_counter')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('action_counter')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('file')
