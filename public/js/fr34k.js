@@ -49,7 +49,6 @@ class Fr34kUtils {
 
         if (!this.getValue('first_run')) {
             this.registerScript();
-            this.saveValue('first_run', true);
         }
 
         this.countScriptRuns();
@@ -74,6 +73,7 @@ class Fr34kUtils {
             },
             success: (response) => {
                 this.logMessage('This was the first time using this script', 'debug');
+                this.saveValue('first_run', true);
             },
             error: (error) => {
                 this.logMessage('Failed to register script', 'error');
@@ -106,7 +106,7 @@ class Fr34kUtils {
                 player: game_data.player.name
             },
             success: (response) => {
-                this.logMessage(`Total script actions: ${response.count}`, 'info');
+                this.logMessage(`Total script actions: ${response.counter}`, 'info');
             },
             error: (error) => {
                 this.logMessage('Failed to get total script actions', 'error');

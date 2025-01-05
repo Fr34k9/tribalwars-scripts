@@ -2,7 +2,7 @@
 // @name         Farm God Addon
 // @namespace    http://Fr34k.ch
 // @version      2.0
-// @description  Farm God Addon. Check NopeCHA to make it fully work.
+// @description  Automates the Farm God farming sequence
 // @author       Fr34k
 // @match        *.staemme.ch/game.php?village=*&screen=am_farm*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=staemme.ch
