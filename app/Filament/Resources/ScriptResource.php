@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\File;
 
 class ScriptResource extends Resource
 {
@@ -38,9 +39,18 @@ class ScriptResource extends Resource
                 Forms\Components\TagsInput::make('tags')
                     ->label('Tags')
                     ->required(),
-                Forms\Components\FileUpload::make('file')
+                Forms\Components\Select::make('file')
                     ->label('File')
-                    ->preserveFilenames(),
+                    ->options(function () {
+                        $options = [];
+
+                        $files = File::files(public_path('js/gm'));
+                        foreach ($files as $file) {
+                            $options[$file->getFilename()] = $file->getFilename();
+                        }
+
+                        return $options;
+                    }),
                 Forms\Components\TextInput::make('download_counter')
                     ->label('Download Counter')
                     ->numeric()
@@ -86,9 +96,6 @@ class ScriptResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('action_counter')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('file')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('version')
