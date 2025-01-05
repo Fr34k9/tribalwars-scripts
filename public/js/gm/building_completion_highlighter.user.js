@@ -86,5 +86,4 @@
 
     // Run the highlighting function
     highlightUpcomingCompletions();
-    utils.finishScript(1);
 })();
