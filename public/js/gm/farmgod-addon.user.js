@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Farm God Addon
-// @namespace    http://Fr34k.ch
+// @namespace    https://Fr34k.ch
 // @version      2.0
 // @description  Automates the Farm God farming sequence
 // @author       Fr34k

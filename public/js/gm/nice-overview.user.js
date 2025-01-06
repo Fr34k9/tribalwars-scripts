@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Nice Overview
-// @namespace    http://Fr34k.ch
+// @namespace    https://Fr34k.ch
 // @version      2.0
 // @description  Modifies the overview page to be more user friendly. Adds a percentage to the warehouse fullness and highlights the row if the warehouse is over a certain percentage full.
 // @author       Fr34k

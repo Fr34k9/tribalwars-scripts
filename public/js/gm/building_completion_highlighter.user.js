@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Building Completion Highlighter
-// @namespace    http://Fr34k.ch
+// @namespace    https://Fr34k.ch
 // @version      2.0
 // @description  Highlights buildings that will complete construction within the next 3 minutes
 // @author       Fr34k
@@ -86,4 +86,5 @@
 
     // Run the highlighting function
     highlightUpcomingCompletions();
+    utils.finishScript(0);
 })();

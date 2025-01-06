@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Rename Attacks
-// @namespace    http://Fr34k.ch
+// @namespace    https://Fr34k.ch
 // @version      2.0
 // @description  Automatically renames all attacks in the overview page
 // @author       Fr34k

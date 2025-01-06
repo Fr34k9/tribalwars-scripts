@@ -16,7 +16,7 @@
     <body class="bg-gray-100">
         <div class="p-2 md:p-10">
             <div class="mb-8 text-center">
-                <h1 class="text-2xl font-bold">Scripts Overview</h1>
+                <h1 class="text-2xl font-bold">Scripts Overview by Fr34k (Beta)</h1>
             </div>
             @livewire('scripts.scripts-stats')
             @livewire('scripts.scripts-grid')

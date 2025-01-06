@@ -17,5 +17,5 @@ Route::get('/', function () {
 Route::get('/scripts/{script}/download', function (Script $script) {
     $script->increment('download_counter');
 
-    return response()->download(storage_path('app/public/' . $script->file));
+    return response()->download(public_path('js/gm/' . $script->file));
 })->name('script.download');
