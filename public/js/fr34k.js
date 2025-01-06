@@ -138,6 +138,21 @@ class Fr34kUtils {
         }
     };
 
+    unitPopulationCost = {
+        spear: 1,
+        sword: 1,
+        axe: 1,
+        archer: 1,
+        spy: 2,
+        light: 4,
+        marcher: 5,
+        heavy: 6,
+        ram: 5,
+        catapult: 8,
+        knight: 10,
+        snob: 100
+    };
+
     // Sleep function (returns a promise for delays)
     async sleep(milliseconds) {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -171,6 +186,10 @@ class Fr34kUtils {
 
     getValue(key) {
         return localStorage.getItem(this.config.script_id + '_' + key);
+    }
+
+    getParameterByName(key) {
+        return new URL(window.location.href).searchParams.get(key);
     }
 
 }
