@@ -26,7 +26,8 @@ class ScriptResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->label('Image')
-                    ->image(),
+                    ->image()
+                    ->imageEditor(),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required(),
@@ -34,8 +35,7 @@ class ScriptResource extends Resource
                     ->label('Short Description')
                     ->required(),
                 Forms\Components\Textarea::make('long_description')
-                    ->label('Long Description')
-                    ->required(),
+                    ->label('Long Description'),
                 Forms\Components\TagsInput::make('tags')
                     ->label('Tags')
                     ->required(),
@@ -67,8 +67,7 @@ class ScriptResource extends Resource
                     ->default(0)
                     ->disabled(),
                 Forms\Components\TextInput::make('version')
-                    ->label('Version')
-                    ->required(),
+                    ->label('Version'),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Is Active')
                     ->default(true),

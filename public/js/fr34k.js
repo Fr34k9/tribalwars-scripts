@@ -28,6 +28,10 @@ class Fr34kUtils {
         return true;
     }
 
+    uiMessage(message, visibleTime = 60) {
+        UI.InfoMessage(message, visibleTime, true);
+    }
+
     // Log function
     logMessage(message, type = 'info') {
         const styles = {
@@ -57,7 +61,9 @@ class Fr34kUtils {
     }
 
     finishScript(actions = 1) {
-        this.countScriptActions(actions);
+        if (actions > 0) {
+            this.countScriptActions(actions);
+        }
         this.logMessage('Script finished', 'info');
     }
 
