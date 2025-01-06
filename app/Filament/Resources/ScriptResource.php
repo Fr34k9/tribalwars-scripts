@@ -49,6 +49,11 @@ class ScriptResource extends Resource
                             $options[$file->getFilename()] = $file->getFilename();
                         }
 
+                        // remove all files which are already assigned to a script (except the current one)
+                        $assignedFiles = Script::where('id', '!=', request()->route('record'))->pluck('file')->toArray();
+
+                        $options = array_diff($options, $assignedFiles);
+
                         return $options;
                     }),
                 Forms\Components\TextInput::make('download_counter')
