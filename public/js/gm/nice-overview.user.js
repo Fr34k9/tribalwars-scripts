@@ -4,7 +4,7 @@
 // @version      2.0
 // @description  Modifies the overview page to be more user friendly. Adds a percentage to the warehouse fullness.
 // @author       Fr34k
-// @match        *.staemme.ch/game.php?village=*&screen=overview_villages&mode=prod*
+// @match        *.staemme.ch/game.php?village=*&screen=overview_villages*&mode=prod*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=staemme.ch
 // @require      https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/js/fr34k.js
 // @grant        none
