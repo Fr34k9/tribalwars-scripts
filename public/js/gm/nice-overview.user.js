@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nice Overview
 // @namespace    https://Fr34k.ch
-// @version      2.0
+// @version      2.1
 // @description  Modifies the overview page to be more user friendly. Adds a percentage to the warehouse fullness.
 // @author       Fr34k
 // @match        *.staemme.ch/game.php?village=*&screen=overview_villages*&mode=prod*
@@ -65,7 +65,7 @@
         // Get highest resource value from a row
         const getHighestResource = $row => {
             const resources = ['wood', 'stone', 'iron'].map(type =>
-                parseFloat($row.find(`.res.${type}`).text().replace('.', ''))
+                parseFloat($row.find(`.${type}`).text().replace('.', ''))
             );
             return Math.max(...resources);
         };
