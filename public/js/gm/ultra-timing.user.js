@@ -10,12 +10,16 @@
 // @match        *.staemme.ch/game.php?*village=*&screen=place*
 // @match        *.staemme.ch/game.php?*screen=place&village=*
 // @match        *ds-ultimate.de/tools/attackPlanner/*show*
+// @require      https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/js/fr34k.js
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=staemme.ch
 // ==/UserScript==
 
 (function () {
     'use strict';
+
+    const utils = new Fr34kUtils({ script_name: 'ultra_timing' });
+
     console.log('Script aktiv: Ultra Timing v1.8');
 
     // ------------------------------------------------------------------
@@ -380,6 +384,7 @@
         while (performance.now() < perfDeadline) { /* spin */ }
 
         btn.click();
+        utils.finishScript(1);
         console.log(`UT fired | mode=${mode} | target=${fireTime.toFixed(0)} | clock=${Clock.now().toFixed(1)} | fireEarlyMs=${CONFIG.fireEarlyMs}`);
     }
 
