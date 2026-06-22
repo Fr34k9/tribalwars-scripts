@@ -14,7 +14,7 @@
     'use strict';
 
     const config = {
-        script_id: 1,
+        script_slug: 'farm_god_addon',
         script_name: 'farm_god_addon',
         farmgod_script: 'https://higamy.github.io/TW/Scripts/Approved/FarmGodCopy.js',
         debug: true,

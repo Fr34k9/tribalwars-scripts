@@ -8,15 +8,13 @@ class Fr34kUtils {
             return;
         }
 
-        // check config
         if (!this.checkConfig()) {
             return;
         }
     }
 
-    // Check config
     checkConfig() {
-        let requiredFields = ['script_id', 'script_name'];
+        let requiredFields = ['script_slug', 'script_name'];
 
         for (let field of requiredFields) {
             if (!this.config[field]) {
@@ -32,7 +30,6 @@ class Fr34kUtils {
         UI.InfoMessage(message, visibleTime, true);
     }
 
-    // Log function
     logMessage(message, type = 'info') {
         const styles = {
             info: 'color: blue; font-weight: bold;',
@@ -42,9 +39,8 @@ class Fr34kUtils {
         console.log(`%c[Fr34k-${this.config.script_name}] ${message}`, styles[type] || styles.info);
     }
 
-    // Initialization function
     initScript() {
-        this.logMessage(`Script ${this.config.script_name}(${this.config.script_id}) active`, 'info');
+        this.logMessage(`Script ${this.config.script_name} (${this.config.script_slug}) active`, 'info');
 
         if (!window.location.href.includes('staemme')) {
             this.logMessage('This script can only run on Tribal Wars.', 'warn');
@@ -69,7 +65,7 @@ class Fr34kUtils {
 
     async registerScript() {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_id + '/register',
+            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/register',
             type: 'POST',
             data: {
                 player: game_data.player.name || 'Unknown',
@@ -89,7 +85,7 @@ class Fr34kUtils {
 
     async countScriptRuns() {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_id + '/run',
+            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/run',
             type: 'POST',
             data: {
                 player: game_data.player.name
@@ -105,7 +101,7 @@ class Fr34kUtils {
 
     async countScriptActions(counter) {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_id + '/action',
+            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/action',
             type: 'POST',
             data: {
                 counter: counter,
@@ -120,21 +116,12 @@ class Fr34kUtils {
         });
     }
 
-
-    // Helper functions
     random = {
         delay: (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
-        //number: (min, max) => parseInt(Math.random() * (Math.max(min, max) - Math.min(min, max)) + Math.min(min, max))
         number: (min, max) => {
-            // Ensure we're working with numbers
             min = Number(min);
             max = Number(max);
-
-            // Get a random decimal between 0 and 1
-            const random = Math.random();
-
-            // Calculate the range and add to minimum
-            return random * (max - min) + min;
+            return Math.random() * (max - min) + min;
         }
     };
 
@@ -153,24 +140,15 @@ class Fr34kUtils {
         snob: 100
     };
 
-    // Sleep function (returns a promise for delays)
     async sleep(milliseconds) {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
     botDetected() {
         let detected = false;
-        if ($('#botprotection_quest').length > 0) {
-            detected = true;
-        }
-
-        if ($('#bot_check').length > 0) {
-            detected = true;
-        }
-
-        if ($('#popup_box_bot_protection').length > 0) {
-            detected = true;
-        }
+        if ($('#botprotection_quest').length > 0) detected = true;
+        if ($('#bot_check').length > 0) detected = true;
+        if ($('#popup_box_bot_protection').length > 0) detected = true;
 
         if (detected) {
             this.logMessage('Bot detected', 'warn');
@@ -180,12 +158,13 @@ class Fr34kUtils {
         return false;
     }
 
+    // localStorage helpers — prefixed by script_slug to avoid collisions between scripts
     saveValue(key, value) {
-        localStorage.setItem(this.config.script_id + '_' + key, value);
+        localStorage.setItem(this.config.script_slug + '_' + key, value);
     }
 
     getValue(key) {
-        return localStorage.getItem(this.config.script_id + '_' + key);
+        return localStorage.getItem(this.config.script_slug + '_' + key);
     }
 
     getParameterByName(key) {
@@ -194,7 +173,6 @@ class Fr34kUtils {
 
 }
 
-// Export the utility class
 if (typeof window !== 'undefined') {
     window.Fr34kUtils = Fr34kUtils;
 }

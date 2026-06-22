@@ -8,6 +8,7 @@ class Script extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
         'short_description',
         'long_description',
         'image',
@@ -19,6 +20,11 @@ class Script extends Model
         'version',
         'is_active',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     protected $casts = [
         'tags' => 'array',

@@ -19,7 +19,7 @@
     'use strict';
 
     const config = {
-        script_id: 5,
+        script_slug: 'ultra_timing',
         script_name: 'ultra_timing',
         debug: true,
     };

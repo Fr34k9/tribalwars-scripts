@@ -15,7 +15,7 @@
     'use strict';
 
     const config = {
-        script_id: 4,
+        script_slug: 'rename_attacks',
         script_name: 'rename_attacks',
         debug: true,
     };

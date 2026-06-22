@@ -31,6 +31,11 @@ class ScriptResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->unique(ignoreRecord: true)
+                    ->helperText('Unique identifier used by scripts to report stats (e.g. farm_god_addon)')
+                    ->required(),
                 Forms\Components\Textarea::make('short_description')
                     ->label('Short Description')
                     ->required(),
@@ -85,6 +90,9 @@ class ScriptResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('slug')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TagsColumn::make('tags')
