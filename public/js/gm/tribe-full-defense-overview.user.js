@@ -14,7 +14,6 @@
 (async function() {
 
     const config = {
-        script_slug: 'tribe_full_defense_overview',
         script_name: 'tribe_full_defense_overview',
     };
 

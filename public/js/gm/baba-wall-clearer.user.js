@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'baba_wall_clearer',
         script_name: 'baba_wall_clearer',
     };
 

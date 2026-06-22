@@ -21,7 +21,6 @@ Changelog
     'use strict';
 
     const config = {
-        script_slug: 'tribe_status_checker',
         script_name: 'tribe_status_checker',
     };
 

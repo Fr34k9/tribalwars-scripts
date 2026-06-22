@@ -14,13 +14,9 @@ class Fr34kUtils {
     }
 
     checkConfig() {
-        let requiredFields = ['script_slug', 'script_name'];
-
-        for (let field of requiredFields) {
-            if (!this.config[field]) {
-                this.logMessage(`Missing config field: ${field}`, 'error');
-                return false;
-            }
+        if (!this.config.script_name) {
+            this.logMessage('Missing config field: script_name', 'error');
+            return false;
         }
 
         return true;
@@ -40,7 +36,7 @@ class Fr34kUtils {
     }
 
     initScript() {
-        this.logMessage(`Script ${this.config.script_name} (${this.config.script_slug}) active`, 'info');
+        this.logMessage(`Script ${this.config.script_name} active`, 'info');
 
         if (!window.location.href.includes('staemme')) {
             this.logMessage('This script can only run on Tribal Wars.', 'warn');
@@ -65,7 +61,7 @@ class Fr34kUtils {
 
     async registerScript() {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/register',
+            url: this.serverUrl + 'scripts/' + this.config.script_name + '/register',
             type: 'POST',
             data: {
                 player: game_data.player.name || 'Unknown',
@@ -85,7 +81,7 @@ class Fr34kUtils {
 
     async countScriptRuns() {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/run',
+            url: this.serverUrl + 'scripts/' + this.config.script_name + '/run',
             type: 'POST',
             data: {
                 player: game_data.player.name
@@ -101,7 +97,7 @@ class Fr34kUtils {
 
     async countScriptActions(counter) {
         $.ajax({
-            url: this.serverUrl + 'scripts/' + this.config.script_slug + '/action',
+            url: this.serverUrl + 'scripts/' + this.config.script_name + '/action',
             type: 'POST',
             data: {
                 counter: counter,
@@ -158,13 +154,13 @@ class Fr34kUtils {
         return false;
     }
 
-    // localStorage helpers — prefixed by script_slug to avoid collisions between scripts
+    // localStorage helpers — prefixed by script_name to avoid collisions between scripts
     saveValue(key, value) {
-        localStorage.setItem(this.config.script_slug + '_' + key, value);
+        localStorage.setItem(this.config.script_name + '_' + key, value);
     }
 
     getValue(key) {
-        return localStorage.getItem(this.config.script_slug + '_' + key);
+        return localStorage.getItem(this.config.script_name + '_' + key);
     }
 
     getParameterByName(key) {

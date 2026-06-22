@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'building_completion_highlighter',
         script_name: 'building_completion_highlighter',
         debug: true,
         highlight_minutes: 3,

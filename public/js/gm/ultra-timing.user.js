@@ -19,7 +19,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'ultra_timing',
         script_name: 'ultra_timing',
         debug: true,
     };

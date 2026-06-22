@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'nice_overview',
         script_name: 'nice_overview',
         debug: true,
     };

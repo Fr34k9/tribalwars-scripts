@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'new_baba_finder',
         script_name: 'new_baba_finder',
     };
 

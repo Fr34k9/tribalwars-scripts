@@ -14,7 +14,6 @@
 (async function() {
 
     const config = {
-        script_slug: 'tribe_member_overview',
         script_name: 'tribe_member_overview',
     };
 

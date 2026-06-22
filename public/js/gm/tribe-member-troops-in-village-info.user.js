@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'tribe_member_troops_in_village',
         script_name: 'tribe_member_troops_in_village',
     };
 

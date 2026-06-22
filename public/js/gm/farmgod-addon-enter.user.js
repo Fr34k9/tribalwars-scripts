@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'farmgod_addon_enter',
         script_name: 'farmgod_addon_enter',
     };
 

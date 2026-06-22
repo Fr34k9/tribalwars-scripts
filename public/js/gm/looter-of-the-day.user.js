@@ -14,7 +14,6 @@
     'use strict';
 
     const config = {
-        script_slug: 'looter_of_the_day',
         script_name: 'looter_of_the_day',
     };
 
