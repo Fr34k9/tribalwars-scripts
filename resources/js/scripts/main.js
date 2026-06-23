@@ -1,5 +1,4 @@
 import { run as farmGodAddon }              from './features/farm-god-addon.js';
-import { run as buildingCompletionHighlighter } from './features/building-completion-highlighter.js';
 import { run as niceOverview }              from './features/nice-overview.js';
 import { run as renameAttacks }             from './features/rename-attacks.js';
 import { run as babaWallClearer }           from './features/baba-wall-clearer.js';
@@ -25,7 +24,6 @@ if (url.includes('screen=am_farm')) {
 
 // Village production overview
 if (url.includes('screen=overview_villages') && url.includes('mode=prod')) {
-    buildingCompletionHighlighter();
     niceOverview();
 }
 
