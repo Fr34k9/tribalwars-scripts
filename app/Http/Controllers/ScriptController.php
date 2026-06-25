@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Log;
 
 class ScriptController extends Controller
 {
-    public function run(Script $script, Request $request)
+    public function run(string $slug, Request $request)
     {
         $validated = $request->validate([
             'player' => 'required|string|max:255',
         ]);
+
+        $script = Script::where('slug', $slug)->firstOrFail();
 
         Log::info('Script executed', [
             'script' => $script->title,
@@ -27,12 +29,14 @@ class ScriptController extends Controller
         ]);
     }
 
-    public function action(Script $script, Request $request)
+    public function action(string $slug, Request $request)
     {
         $validated = $request->validate([
             'player' => 'required|string|max:255',
             'counter' => 'nullable|integer|min:1',
         ]);
+
+        $script = Script::where('slug', $slug)->firstOrFail();
 
         Log::info('Script action', [
             'script' => $script->title,
@@ -48,7 +52,7 @@ class ScriptController extends Controller
         ]);
     }
 
-    public function register(Script $script, Request $request)
+    public function register(string $slug, Request $request)
     {
         $validated = $request->validate([
             'player' => 'required|string|max:255',
@@ -56,6 +60,8 @@ class ScriptController extends Controller
             'premium' => 'required|boolean',
             'world' => 'required|string|max:100',
         ]);
+
+        $script = Script::where('slug', $slug)->firstOrFail();
 
         Log::info('Script registered', [
             'script' => $script->title,

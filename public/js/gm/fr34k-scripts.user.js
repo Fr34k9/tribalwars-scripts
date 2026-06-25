@@ -20,7 +20,7 @@
 	"use strict";
 	var Fr34kUtils = class {
 		constructor(config) {
-			this.serverUrl = "https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/api/";
+			this.serverUrl = "https://tribalwars-scripts.fr34k.ch/api/";
 			this.config = config;
 			if (!this.checkConfig()) return;
 			this.initScript();
@@ -789,7 +789,7 @@
 		async function syncAttacksToServer(attacks) {
 			try {
 				const response = await $.ajax({
-					url: "https://tribalwars-scripts.fr34k.ch/api/ds/tribe-full-defense-overview",
+					url: `${utils.serverUrl}ds/tribe-full-defense-overview`,
 					type: "POST",
 					data: {
 						world: game_data.world,
@@ -798,23 +798,24 @@
 						attacks: JSON.stringify(attacks)
 					}
 				});
-				utils.saveValue("all_attacks", response);
+				utils.saveValue("all_attacks", JSON.stringify(response));
 				utils.saveValue("last_sync", Date.now());
 			} catch (e) {
 				utils.logMessage("Sync failed", "error");
 			}
 		}
 		function staemmeDateToMs(text) {
-			const d = new Date();
+			const now = new Date();
 			const [y, m, day] = [
-				d.getFullYear(),
-				d.getMonth() + 1,
-				d.getDate()
+				now.getFullYear(),
+				now.getMonth() + 1,
+				now.getDate()
 			];
 			text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `).replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `).replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `).replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
 			if (/:\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, ".$1");
-			const ms = Date.parse(text + "Z") - 72e5;
-			return isNaN(ms) ? null : ms;
+			const match = text.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
+			if (!match) return null;
+			return new Date(+match[1], +match[2] - 1, +match[3], +match[4], +match[5], +match[6], +match[7]).getTime();
 		}
 		function staemmeMsToDate(ms) {
 			const d = new Date(ms), now = new Date();

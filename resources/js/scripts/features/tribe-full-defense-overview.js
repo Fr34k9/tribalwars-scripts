@@ -135,11 +135,11 @@ export async function run() {
     async function syncAttacksToServer(attacks) {
         try {
             const response = await $.ajax({
-                url: 'https://tribalwars-scripts.fr34k.ch/api/ds/tribe-full-defense-overview',
+                url: `${utils.serverUrl}ds/tribe-full-defense-overview`,
                 type: 'POST',
                 data: { world: game_data.world, player: game_data.player.name, ally: game_data.player.ally, attacks: JSON.stringify(attacks) },
             });
-            utils.saveValue('all_attacks', response);
+            utils.saveValue('all_attacks', JSON.stringify(response));
             utils.saveValue('last_sync', Date.now());
         } catch (e) {
             utils.logMessage('Sync failed', 'error');
@@ -147,17 +147,17 @@ export async function run() {
     }
 
     function staemmeDateToMs(text) {
-        const d = new Date();
-        const [y, m, day] = [d.getFullYear(), d.getMonth() + 1, d.getDate()];
+        const now = new Date();
+        const [y, m, day] = [now.getFullYear(), now.getMonth() + 1, now.getDate()];
         text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `)
                    .replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `)
-                   // "am 27.06. um 08:56:02:795" → "2026-06-27 08:56:02:795"
                    .replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `)
-                   // "27.06. 08:56:02:795" or "27.06.2026 08:56:02:795" (no am/um)
                    .replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
         if (/:\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, '.$1');
-        const ms = Date.parse(text + 'Z') - 7200000;
-        return isNaN(ms) ? null : ms;
+        // Parse components explicitly so new Date() treats them as local time — no manual UTC offset needed
+        const match = text.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
+        if (!match) return null;
+        return new Date(+match[1], +match[2] - 1, +match[3], +match[4], +match[5], +match[6], +match[7]).getTime();
     }
 
     function staemmeMsToDate(ms) {

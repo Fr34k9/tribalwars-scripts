@@ -9,7 +9,7 @@ Route::prefix('ds')->group(function () {
 });
 
 Route::prefix('scripts')->group(function () {
-    Route::post('/{script}/run', [ScriptController::class, 'run']);
-    Route::post('/{script}/action', [ScriptController::class, 'action']);
-    Route::post('/{script}/register', [ScriptController::class, 'register']);
+    Route::post('/{slug}/run', [ScriptController::class, 'run']);
+    Route::post('/{slug}/action', [ScriptController::class, 'action']);
+    Route::post('/{slug}/register', [ScriptController::class, 'register']);
 });

@@ -1,7 +1,7 @@
 export class Fr34kUtils {
 
     constructor(config) {
-        this.serverUrl = 'https://laravel-test-tribalwars-scripts-laravel.ytyylb.easypanel.host/api/';
+        this.serverUrl = 'https://tribalwars-scripts.fr34k.ch/api/';
         this.config = config;
 
         if (!this.checkConfig()) return;
