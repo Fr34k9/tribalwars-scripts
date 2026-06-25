@@ -70,6 +70,7 @@
                     ['icon' => '✅', 'title' => 'Tribe Status Checker', 'desc' => 'Verify tribe readiness and flag inactive members quickly.'],
                     ['icon' => '⏱️', 'title' => 'Ultra Timing', 'desc' => 'Millisecond-precise attack timing for coordinated conquests.'],
                     ['icon' => '🌍', 'title' => 'Farmgod Addon Enter', 'desc' => 'Keyboard shortcuts for Farmgod to speed up your daily farming routine.'],
+                    ['icon' => '🗡️', 'title' => 'Prepare Defense DS Ultimate', 'desc' => 'Plan support and attack commands directly from the incomings page and export them to DS Ultimate in one click.'],
                 ] as $feature)
                     <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex gap-4">
                         <div class="text-3xl">{{ $feature['icon'] }}</div>
@@ -98,7 +99,7 @@
                         <span class="text-gray-500">/ month</span>
                     </div>
                     <ul class="mt-6 space-y-3 text-sm text-gray-600 flex-1">
-                        <li class="flex gap-2"><span class="text-green-500">✓</span> All 13 script modules</li>
+                        <li class="flex gap-2"><span class="text-green-500">✓</span> All 14 script modules</li>
                         <li class="flex gap-2"><span class="text-green-500">✓</span> Instant download access</li>
                         <li class="flex gap-2"><span class="text-green-500">✓</span> API token for plugin auth</li>
                         <li class="flex gap-2"><span class="text-green-500">✓</span> New features as they ship</li>

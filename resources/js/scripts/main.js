@@ -11,6 +11,7 @@ import { run as tribeMemberTroopsInVillage } from './features/tribe-member-troop
 import { run as tribeStatusChecker }        from './features/tribe-status-checker.js';
 import { run as ultraTiming }               from './features/ultra-timing.js';
 import { run as attackPlanner }            from './features/attack-planner.js';
+import { run as prepareDefenseDsUltimate } from './features/prepare-defense-ds-ultimate.js';
 
 const url = window.location.href;
 
@@ -31,6 +32,7 @@ if (url.includes('screen=overview_villages') && url.includes('mode=prod')) {
 // Incoming attacks overview
 if (url.includes('screen=overview_villages') && url.includes('mode=incomings')) {
     renameAttacks();
+    prepareDefenseDsUltimate();
 }
 
 // Tribe/ally pages

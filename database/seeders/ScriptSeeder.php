@@ -23,6 +23,7 @@ class ScriptSeeder extends Seeder
             'tribe_member_troops_in_village',
             'tribe_status_checker',
             'ultra_timing',
+            'prepare_defense_ds_ultimate',
         ];
 
         foreach ($scripts as $slug) {
