@@ -803,10 +803,14 @@ export function run() {
 
             // ---- Phase 1: Nobles (all snobs from a village → one target, staggered 10–100ms) ----
             if (settings.sendNobles) {
+                const noblesPerTarget = {}; // tCoords → count sent so far across all villages
                 Object.entries(assignments.nobles).forEach(([vidStr, tCoords]) => {
                     if (!tCoords) return;
                     const v = byId[parseInt(vidStr)]; if (!v) return;
-                    let snobsLeft = v.remainingTroops.snob || 0; if (!snobsLeft) return;
+                    const alreadySent = noblesPerTarget[tCoords] || 0;
+                    const slotsLeft   = NOBLE_SLOTS - alreadySent;
+                    if (slotsLeft <= 0) return;
+                    let snobsLeft = Math.min(v.remainingTroops.snob || 0, slotsLeft); if (!snobsLeft) return;
                     const target = byCoords[tCoords]; if (!target) return;
 
                     // Noble #1 carries all off troops (reserving 20 lights per subsequent noble + per-fake-unit reservation).
@@ -874,6 +878,7 @@ export function run() {
                             toVillage:   toVillageObj(target, tCoords),
                             units, travelMs: tms, sendTime, arrivalTime });
 
+                        noblesPerTarget[tCoords] = (noblesPerTarget[tCoords] || 0) + 1;
                         lastNobleMs[tCoords] = arrivalMs; // track last noble per target
                     }
                 });

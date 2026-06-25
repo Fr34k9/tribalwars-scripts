@@ -1231,6 +1231,7 @@
 		const OFF_MIN_LIGHT = 2e3;
 		const OFF_MIN_RAM = 250;
 		const NOBLE_MIN_LIGHT = 100;
+		const NOBLE_SLOTS = 4;
 		const NOBLE_DELAY_MIN = 10;
 		const NOBLE_DELAY_MAX = 100;
 		const OFF_UNITS = [
@@ -2067,75 +2068,81 @@
 				fromMs_ref = fromMs;
 				const focusTargets = settings.focusEnabled ? targets.filter((t) => targetInFocus(t, settings)) : targets;
 				const nonFocusTargets = settings.focusEnabled ? targets.filter((t) => !targetInFocus(t, settings)) : [];
-				if (settings.sendNobles) Object.entries(assignments.nobles).forEach(([vidStr, tCoords]) => {
-					if (!tCoords) return;
-					const v = byId[parseInt(vidStr)];
-					if (!v) return;
-					let snobsLeft = v.remainingTroops.snob || 0;
-					if (!snobsLeft) return;
-					const target = byCoords[tCoords];
-					if (!target) return;
-					const lightsForFollowers = (snobsLeft - 1) * NOBLE_FOLLOW_LIGHT;
-					const lightAvail = v.remainingTroops.light || 0;
-					const lightForFirst = Math.max(0, lightAvail - lightsForFollowers);
-					const firstUnits = {};
-					OFF_UNITS.forEach((u) => {
-						const avail = v.remainingTroops[u] || 0;
-						if (!avail) return;
-						firstUnits[u] = u === "light" ? lightForFirst : avail;
-					});
-					if (!hasOffUnits(firstUnits) && lightAvail > 0) firstUnits.light = Math.max(0, lightAvail - lightsForFollowers);
-					const firstUnitList = Object.keys(firstUnits).filter((u) => (firstUnits[u] || 0) > 0);
-					const tmsFirst = firstUnitList.length ? calcTravelMs(v, target, firstUnitList) : calcTravelMs(v, target, ["snob"]);
-					const tmsFollow = calcTravelMs(v, target, ["snob", "light"]);
-					const windowMin = earliestArrival(Math.max(tmsFirst, tmsFollow));
-					if (windowMin >= toMs - snobsLeft * NOBLE_DELAY_MAX) return;
-					const baseArrivalMs = randMs(windowMin, toMs - snobsLeft * NOBLE_DELAY_MAX);
-					let prevArrivalMs = baseArrivalMs;
-					for (let i = 0; i < snobsLeft; i++) {
-						if ((v.remainingTroops.snob || 0) < 1) break;
-						if (!canAddTo(tCoords, settings) || !canAddFrom(v.id, settings)) break;
-						const isFirst = i === 0;
-						const arrivalMs = isFirst ? baseArrivalMs : prevArrivalMs + Math.floor(Math.random() * 91) + NOBLE_DELAY_MIN;
-						prevArrivalMs = arrivalMs;
-						const tms = isFirst ? tmsFirst : tmsFollow;
-						const arrivalTime = new Date(arrivalMs);
-						const sendTime = new Date(arrivalMs - tms);
-						if (sendTime <= now || isInSleepWindow(arrivalTime, settings)) continue;
-						let units;
-						if (isFirst) {
-							units = {
-								...firstUnits,
-								snob: 1
-							};
-							if (assignments.offs[v.id] === tCoords) assignments.offs[v.id] = null;
-						} else {
-							const followEscort = buildFollowEscort(v.remainingTroops);
-							if (!followEscort) break;
-							units = {
-								...followEscort,
-								snob: 1
-							};
-						}
-						deduct(v.remainingTroops, units);
-						v.usedInOff = true;
-						addAttack({
-							type: "noble",
-							fromVillage: {
-								id: v.id,
-								name: v.name,
-								x: v.x,
-								y: v.y
-							},
-							toVillage: toVillageObj(target, tCoords),
-							units,
-							travelMs: tms,
-							sendTime,
-							arrivalTime
+				if (settings.sendNobles) {
+					const noblesPerTarget = {};
+					Object.entries(assignments.nobles).forEach(([vidStr, tCoords]) => {
+						if (!tCoords) return;
+						const v = byId[parseInt(vidStr)];
+						if (!v) return;
+						const slotsLeft = NOBLE_SLOTS - (noblesPerTarget[tCoords] || 0);
+						if (slotsLeft <= 0) return;
+						let snobsLeft = Math.min(v.remainingTroops.snob || 0, slotsLeft);
+						if (!snobsLeft) return;
+						const target = byCoords[tCoords];
+						if (!target) return;
+						const lightsForFollowers = (snobsLeft - 1) * NOBLE_FOLLOW_LIGHT;
+						const lightAvail = v.remainingTroops.light || 0;
+						const lightForFirst = Math.max(0, lightAvail - lightsForFollowers);
+						const firstUnits = {};
+						OFF_UNITS.forEach((u) => {
+							const avail = v.remainingTroops[u] || 0;
+							if (!avail) return;
+							firstUnits[u] = u === "light" ? lightForFirst : avail;
 						});
-						lastNobleMs[tCoords] = arrivalMs;
-					}
-				});
+						if (!hasOffUnits(firstUnits) && lightAvail > 0) firstUnits.light = Math.max(0, lightAvail - lightsForFollowers);
+						const firstUnitList = Object.keys(firstUnits).filter((u) => (firstUnits[u] || 0) > 0);
+						const tmsFirst = firstUnitList.length ? calcTravelMs(v, target, firstUnitList) : calcTravelMs(v, target, ["snob"]);
+						const tmsFollow = calcTravelMs(v, target, ["snob", "light"]);
+						const windowMin = earliestArrival(Math.max(tmsFirst, tmsFollow));
+						if (windowMin >= toMs - snobsLeft * NOBLE_DELAY_MAX) return;
+						const baseArrivalMs = randMs(windowMin, toMs - snobsLeft * NOBLE_DELAY_MAX);
+						let prevArrivalMs = baseArrivalMs;
+						for (let i = 0; i < snobsLeft; i++) {
+							if ((v.remainingTroops.snob || 0) < 1) break;
+							if (!canAddTo(tCoords, settings) || !canAddFrom(v.id, settings)) break;
+							const isFirst = i === 0;
+							const arrivalMs = isFirst ? baseArrivalMs : prevArrivalMs + Math.floor(Math.random() * 91) + NOBLE_DELAY_MIN;
+							prevArrivalMs = arrivalMs;
+							const tms = isFirst ? tmsFirst : tmsFollow;
+							const arrivalTime = new Date(arrivalMs);
+							const sendTime = new Date(arrivalMs - tms);
+							if (sendTime <= now || isInSleepWindow(arrivalTime, settings)) continue;
+							let units;
+							if (isFirst) {
+								units = {
+									...firstUnits,
+									snob: 1
+								};
+								if (assignments.offs[v.id] === tCoords) assignments.offs[v.id] = null;
+							} else {
+								const followEscort = buildFollowEscort(v.remainingTroops);
+								if (!followEscort) break;
+								units = {
+									...followEscort,
+									snob: 1
+								};
+							}
+							deduct(v.remainingTroops, units);
+							v.usedInOff = true;
+							addAttack({
+								type: "noble",
+								fromVillage: {
+									id: v.id,
+									name: v.name,
+									x: v.x,
+									y: v.y
+								},
+								toVillage: toVillageObj(target, tCoords),
+								units,
+								travelMs: tms,
+								sendTime,
+								arrivalTime
+							});
+							noblesPerTarget[tCoords] = (noblesPerTarget[tCoords] || 0) + 1;
+							lastNobleMs[tCoords] = arrivalMs;
+						}
+					});
+				}
 				const sendOff = (v, target) => {
 					const tCoords = target.coords;
 					if (!hasOffUnits(v.remainingTroops)) return;
