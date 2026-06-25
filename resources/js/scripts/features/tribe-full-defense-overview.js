@@ -150,9 +150,14 @@ export async function run() {
         const d = new Date();
         const [y, m, day] = [d.getFullYear(), d.getMonth() + 1, d.getDate()];
         text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `)
-                   .replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `);
-        if (/\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, '.$1');
-        return Date.parse(text + 'Z') - 3600000;
+                   .replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `)
+                   // "am 27.06. um 08:56:02:795" → "2026-06-27 08:56:02:795"
+                   .replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `)
+                   // "27.06. 08:56:02:795" or "27.06.2026 08:56:02:795" (no am/um)
+                   .replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
+        if (/:\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, '.$1');
+        const ms = Date.parse(text + 'Z') - 7200000;
+        return isNaN(ms) ? null : ms;
     }
 
     function staemmeMsToDate(ms) {

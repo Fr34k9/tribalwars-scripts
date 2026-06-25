@@ -29,6 +29,12 @@ class DsAttackController extends Controller
              $senderVillageName, $senderVillageId, $attackerPlayerName,
              $attackerPlayerId, $arrivalMs] = $cmd;
 
+            if ($arrivalMs === null) {
+                return response()->json([
+                    'message' => "Attack {$commandId} ({$name} → {$targetVillageName}) has no arrival time. The userscript may be outdated or failed to parse the date.",
+                ], 422);
+            }
+
             DsAttack::upsert(
                 [
                     'world'               => $data['world'],

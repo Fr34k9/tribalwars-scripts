@@ -811,9 +811,10 @@
 				d.getMonth() + 1,
 				d.getDate()
 			];
-			text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `).replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `);
-			if (/\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, ".$1");
-			return Date.parse(text + "Z") - 36e5;
+			text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `).replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `).replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `).replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
+			if (/:\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, ".$1");
+			const ms = Date.parse(text + "Z") - 72e5;
+			return isNaN(ms) ? null : ms;
 		}
 		function staemmeMsToDate(ms) {
 			const d = new Date(ms), now = new Date();
