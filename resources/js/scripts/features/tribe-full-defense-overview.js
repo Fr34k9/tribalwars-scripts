@@ -135,7 +135,7 @@ export async function run() {
     async function syncAttacksToServer(attacks) {
         try {
             const response = await $.ajax({
-                url: 'https://greasemonkey.fr34k.ch/ds/tribe-full-defense-overview/index.php',
+                url: 'https://tribalwars-scripts.fr34k.ch/api/ds/tribe-full-defense-overview',
                 type: 'POST',
                 data: { world: game_data.world, player: game_data.player.name, ally: game_data.player.ally, attacks: JSON.stringify(attacks) },
             });
