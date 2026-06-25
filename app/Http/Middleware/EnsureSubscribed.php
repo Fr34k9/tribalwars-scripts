@@ -10,8 +10,14 @@ class EnsureSubscribed
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()?->subscribed()) {
-            if ($request->expectsJson()) {
+        $user = $request->user();
+
+        if ($user?->canAccessPanel(\Filament\Facades\Filament::getPanel('admin'))) {
+            return $next($request);
+        }
+
+        if (! $user?->subscribed()) {
+            if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json(['message' => 'Subscription required.'], 403);
             }
 

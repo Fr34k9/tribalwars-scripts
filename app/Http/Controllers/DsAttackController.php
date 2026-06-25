@@ -14,7 +14,7 @@ class DsAttackController extends Controller
         $data = $request->validate([
             'world'   => 'required|string',
             'player'  => 'required|string',
-            'ally'    => 'required|string',
+            'ally'    => 'nullable|string',
             'attacks' => 'required',
         ]);
 

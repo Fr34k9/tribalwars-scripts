@@ -1,3 +1,4 @@
+import { Fr34kUtils }                        from './fr34k.js';
 import { run as farmGodAddon }              from './features/farm-god-addon.js';
 import { run as niceOverview }              from './features/nice-overview.js';
 import { run as renameAttacks }             from './features/rename-attacks.js';
@@ -12,6 +13,13 @@ import { run as tribeStatusChecker }        from './features/tribe-status-checke
 import { run as ultraTiming }               from './features/ultra-timing.js';
 import { run as attackPlanner }            from './features/attack-planner.js';
 import { run as prepareDefenseDsUltimate } from './features/prepare-defense-ds-ultimate.js';
+
+// Global token gate — show setup modal on every page load until a valid token is stored.
+// No script module runs until the user saves their API token.
+if (!localStorage.getItem('fr34k_api_token')) {
+    const gate = Object.create(Fr34kUtils.prototype);
+    gate.showTokenSetup();
+} else {
 
 const url = window.location.href;
 
@@ -65,3 +73,5 @@ if (
 ) {
     ultraTiming();
 }
+
+} // end token gate

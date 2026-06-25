@@ -21,7 +21,12 @@
                     Install the script in your browser with Tampermonkey or Greasemonkey.
                     Always use the latest version from here.
                 </p>
-                @php $script = \App\Models\Script::first(); @endphp
+                @php
+                    $script = \App\Models\Script::where('is_active', true)
+                        ->whereNotNull('slug')
+                        ->whereNotNull('file')
+                        ->first();
+                @endphp
                 @if ($script)
                     <a href="{{ route('script.download', $script) }}"
                        class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-xl transition">
@@ -62,13 +67,19 @@
                     </div>
                 @else
                     <div class="flex items-center justify-between flex-wrap gap-4">
-                        <span class="inline-flex items-center bg-red-100 text-red-700 text-sm font-medium px-3 py-1 rounded-full">
-                            No active subscription
-                        </span>
-                        <a href="{{ route('subscription.plans') }}"
-                           class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-5 py-2 rounded-xl transition">
-                            Subscribe now
-                        </a>
+                        @if ($user->canAccessPanel(\Filament\Facades\Filament::getPanel('admin')))
+                            <span class="inline-flex items-center bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
+                                Admin — full access
+                            </span>
+                        @else
+                            <span class="inline-flex items-center bg-red-100 text-red-700 text-sm font-medium px-3 py-1 rounded-full">
+                                No active subscription
+                            </span>
+                            <a href="{{ route('subscription.plans') }}"
+                               class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-5 py-2 rounded-xl transition">
+                                Subscribe now
+                            </a>
+                        @endif
                     </div>
                 @endif
             </div>
