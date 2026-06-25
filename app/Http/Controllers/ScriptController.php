@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Log;
 
 class ScriptController extends Controller
 {
+    public function download(Script $script)
+    {
+        $path = public_path("js/gm/{$script->file}");
+
+        abort_unless(file_exists($path), 404);
+
+        $script->increment('download_counter');
+
+        return response()->download($path);
+    }
+
     public function run(string $slug, Request $request)
     {
         $validated = $request->validate([
