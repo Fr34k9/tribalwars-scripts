@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Subscriber-only routes
-Route::middleware(['auth', 'verified', EnsureSubscribed::class])->group(function () {
+Route::middleware(['auth', EnsureSubscribed::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/billing/portal', [SubscriptionController::class, 'portal'])->name('billing.portal');
     Route::get('/scripts/{script}/download', [ScriptController::class, 'download'])->name('script.download');
