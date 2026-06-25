@@ -28,6 +28,7 @@ class DsAttackController extends Controller
             [$commandId, $name, $targetVillageName, $targetVillageId,
              $senderVillageName, $senderVillageId, $attackerPlayerName,
              $attackerPlayerId, $arrivalMs] = $cmd;
+            $type = $cmd[9] ?? 'unknown';
 
             if ($arrivalMs === null) {
                 return response()->json([
@@ -40,7 +41,7 @@ class DsAttackController extends Controller
                     'world'               => $data['world'],
                     'command_id'          => $commandId,
                     'name'                => $name,
-                    'type'                => DsAttack::typeFromName($name),
+                    'type'                => $type,
                     'target_village_id'   => $targetVillageId,
                     'target_village_name' => $targetVillageName,
                     'sender_village_id'   => $senderVillageId,

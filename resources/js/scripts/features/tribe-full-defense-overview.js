@@ -117,9 +117,14 @@ export async function run() {
         const data = [];
         $(response).find('#incomings_table tr.nowrap').each(function () {
             const r = $(this);
+            const iconSrc = r.find('td:nth-child(1) .icon-container img').first().attr('src') ?? '';
+            const type = iconSrc.includes('attack_large') ? 'big'
+                       : iconSrc.includes('attack_medium') ? 'medium'
+                       : iconSrc.includes('attack_small') ? 'small'
+                       : 'unknown';
             data.push([
                 parseInt(r.find('td:nth-child(1) .quickedit').attr('data-id')),
-                r.find('td:nth-child(1) a').text().trim(),
+                r.find('td:nth-child(1) .quickedit-label').text().trim(),
                 r.find('td:nth-child(2) a').text().trim(),
                 parseInt(r.find('td:nth-child(2) a').attr('href').split('village=')[1]),
                 r.find('td:nth-child(3) a').text().trim(),
@@ -127,6 +132,7 @@ export async function run() {
                 r.find('td:nth-child(4) a').text().trim(),
                 parseInt(r.find('td:nth-child(4) a').attr('href').split('id=')[1]),
                 staemmeDateToMs(r.find('td:nth-child(6)').text().trim()),
+                type,
             ]);
         });
         return data;

@@ -28,12 +28,4 @@ class DsAttack extends Model
         'last_synced_at' => 'datetime',
     ];
 
-    public static function typeFromName(string $name): string
-    {
-        if (stripos($name, 'big') !== false) return 'big';
-        if (stripos($name, 'medium') !== false) return 'medium';
-        if (stripos($name, 'small') !== false) return 'small';
-        if ($name !== '') return 'regular';
-        return 'unknown';
-    }
 }
