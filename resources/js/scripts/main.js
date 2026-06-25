@@ -10,6 +10,7 @@ import { run as tribeMemberOverview }       from './features/tribe-member-overvi
 import { run as tribeMemberTroopsInVillage } from './features/tribe-member-troops-in-village.js';
 import { run as tribeStatusChecker }        from './features/tribe-status-checker.js';
 import { run as ultraTiming }               from './features/ultra-timing.js';
+import { run as attackPlanner }            from './features/attack-planner.js';
 
 const url = window.location.href;
 
@@ -47,6 +48,11 @@ if (url.includes('screen=info_village')) {
 if (url.includes('game.php')) {
     tribeStatusChecker();
     tribeFullDefenseOverview();
+}
+
+// Map screen — attack planner
+if (url.includes('screen=map')) {
+    attackPlanner();
 }
 
 // Ultra timing — place screen, confirm screen, DS Ultimate planner
