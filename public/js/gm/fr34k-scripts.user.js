@@ -918,7 +918,7 @@
 				now.getMonth() + 1,
 				now.getDate()
 			];
-			text = text.replace(/(?:hüt um|heute um|today at)/g, `${y}-${m}-${day} `).replace(/(?:morn um|morgen um|tomorrow at)/g, `${y}-${m}-${day + 1} `).replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `).replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
+			text = text.replace(/(?:hüt um|heute um|today at)\s*/g, `${y}-${m}-${day} `).replace(/(?:morn um|morgen um|tomorrow at)\s*/g, `${y}-${m}-${day + 1} `).replace(/^am\s+(\d{1,2})\.(\d{2})\.(?:\d{4})?\s+um\s+/, (_, dd, mm) => `${y}-${mm}-${dd} `).replace(/^(\d{1,2})\.(\d{2})\.(?:\d{4})?\s*/, (_, dd, mm) => `${y}-${mm}-${dd} `);
 			if (/:\d{3}$/.test(text)) text = text.replace(/:([^:]+)$/, ".$1");
 			const match = text.match(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
 			if (!match) return null;
